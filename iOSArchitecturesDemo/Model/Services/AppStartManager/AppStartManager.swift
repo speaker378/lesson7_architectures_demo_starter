@@ -17,22 +17,40 @@ final class AppStartManager {
     }
     
     func start() {
-        let rootVC = SearchBuilder.build()
-        rootVC.navigationItem.title = "Search via iTunes"
-        
-        let navVC = self.configuredNavigationController
-        navVC.viewControllers = [rootVC]
-        
-        window?.rootViewController = navVC
+        let rootVCApps = SearchAppsBuilder.build()
+        let navAppsVC = configuredNavigationController()
+        navAppsVC.viewControllers = [rootVCApps]
+        rootVCApps.navigationItem.title = "Search apps"
+        navAppsVC.tabBarItem.title = rootVCApps.navigationItem.title
+
+
+        let rootVCSongs = SearchSongsBuilder.build()
+        let navSongsVC = configuredNavigationController()
+        navSongsVC.viewControllers = [rootVCSongs]
+        rootVCSongs.navigationItem.title = "Search songs"
+        navSongsVC.tabBarItem.title = rootVCSongs.navigationItem.title
+
+        let tabVC = configuredTabBarController
+        tabVC.viewControllers = [navAppsVC, navSongsVC]
+
+        window?.rootViewController = tabVC
         window?.makeKeyAndVisible()
     }
-    
-    private lazy var configuredNavigationController: UINavigationController = {
+
+    private func configuredNavigationController() -> UINavigationController {
         let navVC = UINavigationController()
         navVC.navigationBar.barTintColor = UIColor.varna
         navVC.navigationBar.isTranslucent = false
         navVC.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navVC.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         return navVC
+    }
+
+    private lazy var configuredTabBarController: UITabBarController = {
+        let tabVC = UITabBarController()
+        tabVC.tabBar.barStyle = .default
+        tabVC.tabBar.barTintColor = UIColor.varna
+        tabVC.tabBar.isTranslucent = false
+        return tabVC
     }()
 }
