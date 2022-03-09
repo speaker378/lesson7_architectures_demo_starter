@@ -25,10 +25,17 @@ protocol SearchSongsViewOutput: AnyObject {
 class SearchSongsPresenter {
 
     weak var viewInput: (UIViewController & SearchSongsViewInput)?
-    private let searchService = ITunesSearchService()
+
+    let interactor: SearchSongsInteractorInput
+    let router: SearchSongsRouterInput
+
+    init(interactor: SearchSongsInteractorInput, router: SearchSongsRouterInput) {
+        self.interactor = interactor
+        self.router = router
+    }
 
     private func requestSongs(with query: String) {
-        searchService.getSongs(forQuery: query) { [weak self] (result) in
+        self.interactor.requestSongs(with: query) { [weak self]  (result) in
             guard let self = self else { return }
 
             self.viewInput?.throbber(show: false)
@@ -56,5 +63,6 @@ extension SearchSongsPresenter: SearchSongsViewOutput {
     }
 
     func viewDidSelectSong(song: ITunesSong) {
+        self.router.openDetails(for: song)
     }
 }
