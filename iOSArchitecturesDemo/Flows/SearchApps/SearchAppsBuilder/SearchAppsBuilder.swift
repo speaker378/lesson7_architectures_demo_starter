@@ -1,5 +1,5 @@
 //
-//  SearchBuilder.swift
+//  SearchAppsBuilder.swift
 //  iOSArchitecturesDemo
 //
 //  Created by Veaceslav Chirita on 21.02.2022.
@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class SearchBuilder {
+class SearchAppsBuilder {
     
     static func build() -> (UIViewController & SearchViewInput) {
         let presenter = SearchPresenter()
